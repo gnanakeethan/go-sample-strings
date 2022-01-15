@@ -38,3 +38,17 @@ func averageNumber(s string) (error, float64) {
 	}
 	return nil, float64(sum) / float64(len(splits)/2) // split length / 2 as half of strings are numbers
 }
+
+func wholeStory(s string) (error, string) {
+	valid, splits := testValidity(s)
+	if !valid {
+		return errors.New("Invalid input string : " + s), ""
+	}
+	var story []string
+	for i, split := range splits {
+		if i%2 == 1 {
+			story = append(story, split)
+		}
+	}
+	return nil, strings.Join(story, " ")
+}

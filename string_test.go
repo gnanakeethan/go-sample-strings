@@ -55,3 +55,30 @@ func Test_averageNumber(t *testing.T) {
 		})
 	}
 }
+
+func Test_wholeStory(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  error
+		want1 string
+	}{
+		{name: "test1", args: args{s: "2-abc-34-abc"}, want: nil, want1: "abc abc"},
+		{name: "test2", args: args{s: "abc-34-abc"}, want: errors.New("Invalid input string : " + "abc-34-abc"), want1: ""},
+		{name: "test3", args: args{s: "-34-abc"}, want: errors.New("Invalid input string : " + "-34-abc"), want1: ""},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := wholeStory(tt.args.s)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("wholeStory() got = %v, want %v", got, tt.want)
+			}
+			if got1 != tt.want1 {
+				t.Errorf("wholeStory() got1 = %v, want %v", got1, tt.want1)
+			}
+		})
+	}
+}
