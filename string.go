@@ -1,6 +1,7 @@
 package gosample
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 )
@@ -21,4 +22,19 @@ func testValidity(s string) (bool, []string) {
 		return false, nil
 	}
 	return true, splits
+}
+
+func averageNumber(s string) (error, float64) {
+	valid, splits := testValidity(s)
+	if !valid {
+		return errors.New("Invalid input string : " + s), 0
+	}
+	sum := 0
+	for i, split := range splits {
+		if i%2 == 0 { // only convert even indexed splits (0,2, 4, 6, etc)
+			number, _ := strconv.Atoi(split)
+			sum += number
+		}
+	}
+	return nil, float64(sum) / float64(len(splits)/2) // split length / 2 as half of strings are numbers
 }
