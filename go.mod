@@ -1,3 +1,3 @@
-module github.com/gnanakeethan/gosample
+module github.com/gnanakeethan/go-sample-strings
 
 go 1.17
