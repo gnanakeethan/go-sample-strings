@@ -2,6 +2,7 @@ package gosample
 
 import (
 	"errors"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -51,4 +52,38 @@ func wholeStory(s string) (error, string) {
 		}
 	}
 	return nil, strings.Join(story, " ")
+}
+
+func storyStats(s string) (error, string, string, float64, []string) {
+	valid, splits := testValidity(s)
+	if !valid {
+		return errors.New("Invalid input string : " + s), "", "", 0, []string{}
+	}
+	var longestWordLength int
+	var longestWord string
+	var shortestWordLength int
+	var shortestWord string
+	var sum int
+	for i, split := range splits {
+		if i%2 == 1 {
+			currentLen := len(split)
+			if currentLen > longestWordLength {
+				longestWordLength = currentLen
+				longestWord = split
+			} else if currentLen < shortestWordLength || shortestWordLength == 0 {
+				shortestWordLength = currentLen
+				shortestWord = split
+			}
+			sum += currentLen
+		}
+	}
+	average := float64(sum) / float64(len(splits)/2)
+	var averageLengthStrings []string
+	for i, split := range splits {
+		if i%2 == 1 && len(split) == int(math.Floor(average)) || len(split) == int(math.Ceil(average)) {
+			averageLengthStrings = append(averageLengthStrings, split)
+		}
+	}
+	
+	return nil, shortestWord, longestWord, average, averageLengthStrings
 }

@@ -82,3 +82,43 @@ func Test_wholeStory(t *testing.T) {
 		})
 	}
 }
+
+func Test_storyStats(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  error
+		want1 string
+		want2 string
+		want3 float64
+		want4 []string
+	}{
+		{name: "test1", args: args{s: "2-abc-34-abc-23-ab"}, want: nil, want1: "ab", want2: "abc", want3: 8.0 / 3.0, want4: []string{"abc", "abc", "ab"}},
+		{name: "test2", args: args{s: "abc-34-abc"}, want: errors.New("Invalid input string : " + "abc-34-abc"), want1: "", want2: "", want3: 0, want4: []string{}},
+		{name: "test3", args: args{s: "-34-abc"}, want: errors.New("Invalid input string : " + "-34-abc"), want1: "", want2: "", want3: 0, want4: []string{}},
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1, got2, got3, got4 := storyStats(tt.args.s)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("storyStats() got = %v, want %v", got, tt.want)
+			}
+			if got1 != tt.want1 {
+				t.Errorf("storyStats() got1 = %v, want %v", got1, tt.want1)
+			}
+			if got2 != tt.want2 {
+				t.Errorf("storyStats() got2 = %v, want %v", got2, tt.want2)
+			}
+			if got3 != tt.want3 {
+				t.Errorf("storyStats() got3 = %v, want %v", got3, tt.want3)
+			}
+			if !reflect.DeepEqual(got4, tt.want4) {
+				t.Errorf("storyStats() got4 = %v, want %v", got4, tt.want4)
+			}
+		})
+	}
+}
